@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "666665543047",
+    "project_id": "bullwise-d8dd6",
+    "storage_bucket": "bullwise-d8dd6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666665543047:android:c54efe02ee3f57cdae9f22",
+        "android_client_info": {
+          "package_name": "com.suneel.bullwise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLtJdBcCnM8LbQOhYaGAwt3saghd1RUpo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

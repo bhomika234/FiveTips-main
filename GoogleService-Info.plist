@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyBrseYISE2ec-QCa9h2XWPeQy1geW4fyuw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>666665543047</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.suneel.bullwise</string>
+	<key>PROJECT_ID</key>
+	<string>bullwise-d8dd6</string>
+	<key>STORAGE_BUCKET</key>
+	<string>bullwise-d8dd6.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:666665543047:ios:fddc37a22906c95fae9f22</string>
+</dict>
+</plist>
