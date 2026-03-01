@@ -48,9 +48,9 @@ interface SignUpFormData {
 }
 
 const defaultValues: SignUpFormData = {
-  email: "",
-  password: "",
-  confirmPassword: "",
+  email: "test@gmail.com",
+  password: "11223344",
+  confirmPassword: "11223344",
 };
 
 type NavigationProp = NativeStackNavigationProp<AppStackParamList>;
@@ -86,56 +86,7 @@ export function CreateAccount({ navigation }: CreateAccountProps) {
   const isFormValid = Boolean(email && password && confirmPassword && isValid);
 
   const signup: SubmitHandler<SignUpFormData> = async (formData) => {
-    if (!checked) {
-      Toast.show({
-        type: "error",
-        text1: "Terms Not Accepted",
-        text2: "Please accept the terms and conditions to continue",
-        position: "top",
-      });
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const { email, password } = formData;
-
-      const { user, error }: any = await authService.signUp({
-        email,
-        password,
-      });
-
-      if (error) {
-        Toast.show({
-          type: "error",
-          text1: "Sign Up Failed",
-          text2: error.message,
-          position: "top",
-        });
-        return;
-      }
-
-      if (user) {
-        nav.navigate("Login");
-      }
-    } catch (error) {
-      console.error("Signup error:", error);
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : typeof error === "string"
-          ? error
-          : "An unexpected error occurred. Please try again.";
-
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: errorMessage,
-        position: "top",
-      });
-    } finally {
-      setLoading(false);
-    }
+   navigation.navigate("Main")
   };
 
   return (

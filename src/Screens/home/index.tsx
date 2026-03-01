@@ -1,19 +1,10 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  FlatList,
-  RefreshControl,
-  ActivityIndicator,
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 
-import { Text, Screen, EmptyState } from "../../Components";
+import { Text, Screen } from "../../Components";
 import { AppStackScreenProps } from "../../utils/interfaces";
 import { colors, spacing } from "../../theme";
 import { UserContext } from "../../context/UserContext";
-import { useTips } from "../../context/TipsContext";
 import { LinearGradient } from "expo-linear-gradient";
 import { WithLocalSvg } from "react-native-svg/css";
 import { Images } from "../../assets/Images";
@@ -21,68 +12,6 @@ import StockCard from "../../Components/StockCard";
 // import { LinearGradient } from "react-native-svg";
 export function Home(props: AppStackScreenProps<"Home">) {
   const { user } = React.useContext(UserContext);
-  const { displayTips, loading, error, refreshTips } = useTips();
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  const onRefresh = React.useCallback(async () => {
-    setRefreshing(true);
-    try {
-      await refreshTips();
-    } finally {
-      setRefreshing(false);
-    }
-  }, [refreshTips]);
-
-  const renderContent = () => {
-    if (loading && displayTips.length === 0) {
-      return (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.primary} />
-          <Text text="Loading tips..." style={styles.loadingText} />
-        </View>
-      );
-    }
-
-    if (error && displayTips.length === 0) {
-      return (
-        <EmptyState
-          heading="Failed to load tips"
-          content={error}
-          button="Try Again"
-          buttonOnPress={refreshTips}
-        />
-      );
-    }
-
-    if (displayTips.length === 0) {
-      return (
-        <EmptyState
-          heading="No tips available"
-          content="Check back later for new stock tips"
-          button="Refresh"
-          buttonOnPress={refreshTips}
-        />
-      );
-    }
-
-    return (
-      <FlatList
-        data={displayTips}
-        contentContainerStyle={{ paddingVertical: 8, paddingHorizontal: 2 }}
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => <StockCard stock={item} />}
-        keyExtractor={(item) => item.id.toString()}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            colors={[colors.primary]}
-            tintColor={colors.primary}
-          />
-        }
-      />
-    );
-  };
 
   return (
     <Screen
@@ -140,17 +69,7 @@ export function Home(props: AppStackScreenProps<"Home">) {
           />
         </View>
       </LinearGradient>
-      <View style={styles._bodysection}>
-        {/* <View style={styles._body_header}>
-          <WithLocalSvg height={24} asset={Images.staricon} />
-          <Text
-            text={`${displayTips.length} AI Curated Tips`}
-            weight="bold"
-            style={styles.tipstitle}
-          />
-        </View> */}
-        {renderContent()}
-      </View>
+      <View style={styles._bodysection}></View>
     </Screen>
   );
 }

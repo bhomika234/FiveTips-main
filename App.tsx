@@ -11,8 +11,6 @@ import {
   initialWindowMetrics,
 } from "react-native-safe-area-context";
 import Toast, { BaseToastProps } from "react-native-toast-message";
-import { HistoryProvider } from "./src/context/HistoryContext";
-import { TipsProvider } from "./src/context/TipsContext";
 import { UserProvider } from "./src/context/UserContext";
 import { Navigation } from "./src/navigation/StackNavigator";
 import { ErrorBoundary } from "./src/Screens/error/ErrorBoundary";
@@ -117,92 +115,39 @@ const App = () => {
     return null;
   }
 
-  const linking = {
-    prefixes: ["bullwise://"],
-    config: {
-      screens: {
-        Details: "Details/:stockId",
-      },
-    },
-    async getInitialURL() {
-      // First, you may want to do the default deep link handling
-      // Check if app was opened from a deep link
-      const url = await Linking.getInitialURL();
-
-      if (url != null) {
-        return url;
-      }
-
-      // Handle URL from expo push notifications
-      const response = await Notifications.getLastNotificationResponseAsync();
-
-      if (response?.notification.request.content.data.stockId) {
-        return `bullwise://Details/${response.notification.request.content.data.stockId}`;
-      }
-      return null;
-    },
-    subscribe(listener: (url: string) => void) {
-      const onReceiveURL = ({ url }: { url: string }) => listener(url);
-
-      // Listen to incoming links from deep linking
-      const subscription = Linking.addEventListener("url", onReceiveURL);
-
-      // Listen to expo push notifications
-      const notificationSubscription =
-        Notifications.addNotificationResponseReceivedListener((response) => {
-          // Handle stock details from notification
-          if (response.notification.request.content.data.stockId) {
-            const stockId = response.notification.request.content.data.stockId;
-            const url = `bullwise://Details/${stockId}`;
-            listener(url);
-          }
-        });
-
-      return () => {
-        // Clean up the event listeners
-        subscription.remove();
-        notificationSubscription.remove();
-      };
-    },
-  };
-
   return (
     <UserProvider>
-      <TipsProvider>
-        <HistoryProvider>
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <StatusBar
-              barStyle={Platform.OS === "ios" ? "dark-content" : "default"}
-              backgroundColor="#FFFFFF"
-              translucent={false}
-            />
-            <SafeAreaProvider
-              initialMetrics={initialWindowMetrics}
-              style={{ flex: 1 }}
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <StatusBar
+          barStyle={Platform.OS === "ios" ? "dark-content" : "default"}
+          backgroundColor="#FFFFFF"
+          translucent={false}
+        />
+        <SafeAreaProvider
+          initialMetrics={initialWindowMetrics}
+          style={{ flex: 1 }}
+        >
+          <ErrorBoundary catchErrors="dev">
+            <NavigationContainer
+              theme={{
+                dark: false,
+                colors: {
+                  primary: colors.palette.primary,
+                  background: colors.background,
+                  card: colors.background,
+                  text: colors.text,
+                  border: colors.border,
+                  notification: colors.palette.primary,
+                },
+              }}
             >
-              <ErrorBoundary catchErrors="dev">
-                <NavigationContainer
-                  theme={{
-                    dark: false,
-                    colors: {
-                      primary: colors.palette.primary,
-                      background: colors.background,
-                      card: colors.background,
-                      text: colors.text,
-                      border: colors.border,
-                      notification: colors.palette.primary,
-                    },
-                  }}
-                >
-                  <GestureHandlerRootView style={{ flex: 1 }}>
-                    <Navigation />
-                  </GestureHandlerRootView>
-                </NavigationContainer>
-              </ErrorBoundary>
-            </SafeAreaProvider>
-          </GestureHandlerRootView>
-        </HistoryProvider>
-      </TipsProvider>
+              <GestureHandlerRootView style={{ flex: 1 }}>
+                <Navigation />
+              </GestureHandlerRootView>
+            </NavigationContainer>
+          </ErrorBoundary>
+        </SafeAreaProvider>
+      </GestureHandlerRootView>
       <Toast
         config={{
           success: (props) => {

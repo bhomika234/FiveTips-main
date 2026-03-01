@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { BullwiseTipsModal } from "../../../Components/BullwiseTipsModal";
 import {
   TextInput,
@@ -9,33 +9,25 @@ import {
   ImageBackground,
   ScrollView,
   Image,
-  Alert,
 } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import { Button, Screen, Text, TextField } from "../../../Components";
 import { AppStackScreenProps } from "../../../utils/interfaces";
-import { colors, spacing, typography } from "../../../theme";
+import { colors, spacing } from "../../../theme";
 import { Images } from "../../../assets/Images";
 import { loginValidations } from "../../../validations/auth";
 import { ILogin } from "../../../types/app.types";
-import { authService } from "../../../services/auth.service";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { UserContext } from "../../../context/UserContext";
-import Toast from "react-native-toast-message";
 import { WithLocalSvg } from "react-native-svg/css";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { usePushNotifications } from "../../../context/usePushNotifications";
+import { useNavigation } from "@react-navigation/native";
 
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 export function LoginScreen(props: LoginScreenProps) {
   const authPasswordInput = useRef<TextInput>();
-  const { expoPushToken, notification, sendPushNotification } =
-    usePushNotifications();
+  const navigation = useNavigation();
 
-  const [isAuthPasswordHidden, setIsAuthPasswordHidden] = useState(true);
+  const [isAuthPasswordHidden] = useState(true);
   const [loading, setLoading] = useState(false);
-  const { setUser } = useContext(UserContext);
   // No need for useToast hook with react-native-toast-message
   const [showTipsModal, setShowTipsModal] = useState(false);
 
@@ -49,71 +41,18 @@ export function LoginScreen(props: LoginScreenProps) {
     mode: "onChange",
     reValidateMode: "onChange",
     defaultValues: {
-      email: "",
-      password: "",
+      email: "dev@gmail.com",
+      password: "11223344",
     },
   });
 
   const [email, password] = watch(["email", "password"]);
   const isFormValid = Boolean(email && password && isValid);
-  const [user, setuser] = useState<any>(null);
 
   const login: SubmitHandler<ILogin> = async (formData: ILogin) => {
-    setLoading(true);
-
-    try {
-      const { user, error } = await authService.signIn(
-        formData.email,
-        formData.password
-      );
-
-      if (error) {
-        const errorMessage =
-          error instanceof Error
-            ? error.message
-            : typeof error === "string"
-            ? error
-            : "An error occurred during login";
-
-        Toast.show({
-          type: "error",
-          text1: "Login Failed",
-          text2: errorMessage,
-          position: "top",
-        });
-        return;
-      }
-
-      if (user) {
-        setShowTipsModal(true);
-        setuser(user);
-      }
-    } catch (error) {
-      console.error("Unexpected login error:", error);
-      // Extract error message from the error object
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : typeof error === "string"
-          ? error
-          : "An unexpected error occurred. Please try again.";
-      // Show error toast with the extracted message
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: errorMessage,
-        position: "top",
-      });
-    } finally {
-      setLoading(false);
-    }
+    navigation.navigate("Main");
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setShowTipsModal(true);
-    }, 2000);
-  }, []);
   return (
     <>
       <Screen

@@ -59,7 +59,7 @@ const Tabs = () => {
           ),
         }}
       />
-{/* 
+      {/* 
       <Tab.Screen
         name="History"
         component={History}
@@ -126,9 +126,6 @@ const userRoutes: IRoutes[] = [
     showHeader: true,
     title: "",
   },
-];
-
-const authRoutes: IRoutes[] = [
   {
     name: "GettingStart",
     component: GettingStart,
@@ -210,7 +207,7 @@ export const Navigation = () => {
     checkFirstLaunch();
   }, []);
   // Determine which routes to use based on authentication state
-  const routes = user ? userRoutes : authRoutes;
+  const routes = userRoutes;
   // Show loading indicator while checking first launch
   if (isLoading) {
     return null;
