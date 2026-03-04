@@ -14,8 +14,15 @@ import { ContactSupport } from "./contactsupport";
 import { PrivacyPolicy } from "./privacypolicy";
 import { TermsConditions } from "./termsconditions";
 import { Subscription } from "./subscription";
+
+// 1. LogoScreen ka import check karein
+// Agar file ka naam 'LogoScreen.tsx' hai toh ye sahi hai
+import { LogoScreen } from "./LogoScreen"; 
+
 export {
   Splash,
+  Splash as SplashScreen, // StackNavigator ke liye alias
+  LogoScreen,
   GettingStart,
   Terms,
   Trial,

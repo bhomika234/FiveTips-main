@@ -6,10 +6,12 @@ import {
   StyleProp,
   TextStyle,
   ViewStyle,
+  StyleSheet, // Isay add kiya hai styles flatten karne ke liye
 } from "react-native";
 import { colors, spacing, typography } from "../theme";
 import { Text, TextProps } from "./Text";
 import { LinearGradient } from "expo-linear-gradient";
+
 type Presets = keyof typeof $viewPresets;
 
 export interface ButtonAccessoryProps {
@@ -18,62 +20,20 @@ export interface ButtonAccessoryProps {
 }
 
 export interface ButtonProps extends PressableProps {
-  /**
-   * Text which is looked up via i18n.
-   */
   gradient?: boolean;
   tx?: TextProps["tx"];
-  /**
-   * The text to display if not using `tx` or nested components.
-   */
   text?: TextProps["text"];
-  /**
-   * Optional options to pass to i18n. Useful for interpolation
-   * as well as explicitly setting locale or translation fallbacks.
-   */
   txOptions?: TextProps["txOptions"];
-  /**
-   * An optional style override useful for padding & margin.
-   */
   style?: StyleProp<ViewStyle>;
-  /**
-   * An optional style override for the "pressed" state.
-   */
   pressedStyle?: StyleProp<ViewStyle>;
-  /**
-   * An optional style override for the button text.
-   */
   textStyle?: StyleProp<TextStyle>;
-  /**
-   * An optional style override for the button text when in the "pressed" state.
-   */
   pressedTextStyle?: StyleProp<TextStyle>;
-  /**
-   * One of the different types of button presets.
-   */
   preset?: Presets;
-  /**
-   * An optional component to render on the right side of the text.
-   * Example: `RightAccessory={(props) => <View {...props} />}`
-   */
   RightAccessory?: ComponentType<ButtonAccessoryProps>;
-  /**
-   * An optional component to render on the left side of the text.
-   * Example: `LeftAccessory={(props) => <View {...props} />}`
-   */
   LeftAccessory?: ComponentType<ButtonAccessoryProps>;
-  /**
-   * Children components.
-   */
   children?: React.ReactNode;
 }
 
-/**
- * A component that allows users to take actions and make choices.
- * Wraps the Text component with a Pressable component.
- *
- * - [Documentation and Examples](https://github.com/infinitered/ignite/blob/master/docs/Components-Button.md)
- */
 export function Button(props: ButtonProps) {
   const {
     tx,
@@ -90,35 +50,32 @@ export function Button(props: ButtonProps) {
     ...rest
   } = props;
 
-  const preset: Presets = $viewPresets[props.preset!]
-    ? props.preset
-    : "default";
-  function $viewStyle({ pressed }) {
+  const preset: Presets = $viewPresets[props.preset!] ? props.preset! : "default";
+
+  // Web compatibility ke liye array ko flatten kiya hai
+  function $viewStyle({ pressed }: { pressed: boolean }) {
     const styles = [
       $viewPresets[preset],
       $viewStyleOverride,
       !!pressed && [$pressedViewPresets[preset], $pressedViewStyleOverride],
     ];
 
-    // If gradient is true, remove the backgroundColor as it will be handled by LinearGradient
+    const flattened = StyleSheet.flatten(styles);
+
     if (gradient) {
-      return styles.map((style) => {
-        if (style && typeof style === "object") {
-          const { backgroundColor, ...rest } = style as any;
-          return rest;
-        }
-        return style;
-      });
+      const { backgroundColor, ...restStyle } = flattened as any;
+      return restStyle;
     }
 
-    return styles;
+    return flattened;
   }
-  function $textStyle({ pressed }) {
-    return [
+
+  function $textStyle({ pressed }: { pressed: boolean }) {
+    return StyleSheet.flatten([
       $textPresets[preset],
       $textStyleOverride,
       !!pressed && [$pressedTextPresets[preset], $pressedTextStyleOverride],
-    ];
+    ]);
   }
 
   const renderButtonContent = (state: any) => (
@@ -131,7 +88,7 @@ export function Button(props: ButtonProps) {
         tx={tx}
         text={text}
         txOptions={txOptions}
-        style={[$textStyle(state)]}
+        style={$textStyle(state)}
       >
         {children}
       </Text>
@@ -145,20 +102,10 @@ export function Button(props: ButtonProps) {
   return gradient ? (
     <Pressable
       accessibilityRole="button"
-      style={({ pressed }) => {
-        // Get the base styles without the backgroundColor
-        const baseStyles = $viewStyle({ pressed });
-        // Apply the gradient as a background
-        return [
-          baseStyles,
-          {
-            width: "100%",
-            // Reset any background color as we're using gradient
-            backgroundColor: "transparent",
-            // overflow: 'hidden'
-          },
-        ];
-      }}
+      style={({ pressed }) => [
+        $viewStyle({ pressed }),
+        { width: "100%", backgroundColor: "transparent" },
+      ]}
       {...rest}
     >
       {({ pressed }) => (
@@ -166,17 +113,7 @@ export function Button(props: ButtonProps) {
           colors={["#009B77", "#01BA8F"]}
           style={[
             $baseViewStyle,
-            {
-              flex: 1,
-              width: "100%",
-              // Ensure the gradient fills the entire button
-              // margin: 0,
-              borderRadius: 100,
-              // Inherit border radius from base style
-              // Reset any background color
-              backgroundColor: "transparent",
-              // minHeight:58
-            },
+            { flex: 1, width: "100%", borderRadius: 100, backgroundColor: "transparent" },
           ]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
@@ -186,7 +123,11 @@ export function Button(props: ButtonProps) {
       )}
     </Pressable>
   ) : (
-    <Pressable style={$viewStyle} accessibilityRole="button" {...rest}>
+    <Pressable 
+      style={(state) => $viewStyle(state)} 
+      accessibilityRole="button" 
+      {...rest}
+    >
       {({ pressed }) => renderButtonContent({ pressed })}
     </Pressable>
   );
@@ -217,31 +158,30 @@ const $baseTextStyle: TextStyle = {
 const $rightAccessoryStyle: ViewStyle = { marginStart: spacing.xs, zIndex: 1 };
 const $leftAccessoryStyle: ViewStyle = { marginEnd: spacing.xs, zIndex: 1 };
 
+// Yahan arrays ko objects mein convert kiya hai (Web fix)
 const $viewPresets = {
-  default: [
-    $baseViewStyle,
-    {
-      borderWidth: 1,
-      borderColor: colors.palette.neutral400,
-      backgroundColor: colors.palette.neutral100,
-    },
-  ] as StyleProp<ViewStyle>,
+  default: {
+    ...$baseViewStyle,
+    borderWidth: 1,
+    borderColor: colors.palette.neutral400,
+    backgroundColor: colors.palette.neutral100,
+  } as ViewStyle,
 
-  filled: [
-    $baseViewStyle,
-    { backgroundColor: colors.palette.neutral300 },
-  ] as StyleProp<ViewStyle>,
+  filled: {
+    ...$baseViewStyle,
+    backgroundColor: colors.palette.neutral300,
+  } as ViewStyle,
 
-  reversed: [
-    $baseViewStyle,
-    { backgroundColor: colors.primary },
-  ] as StyleProp<ViewStyle>,
+  reversed: {
+    ...$baseViewStyle,
+    backgroundColor: colors.primary,
+  } as ViewStyle,
 };
 
 const $textPresets: Record<Presets, StyleProp<TextStyle>> = {
   default: $baseTextStyle,
   filled: $baseTextStyle,
-  reversed: [$baseTextStyle, { color: colors.palette.neutral100 }],
+  reversed: { ...$baseTextStyle, color: colors.palette.neutral100 },
 };
 
 const $pressedViewPresets: Record<Presets, StyleProp<ViewStyle>> = {
