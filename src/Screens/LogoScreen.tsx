@@ -27,7 +27,7 @@ export const LogoScreen  = () => {
   );
 };
 
-// Styles
+
 const $container: ViewStyle = { padding: spacing.lg };
 const $logoContainer: ViewStyle = { alignItems: "center", marginTop: spacing.xl };
 const $logoCircle: ViewStyle = { height: 60, width: 60, borderRadius: 30, backgroundColor: "#1A1C3D", justifyContent: "center", alignItems: "center" };

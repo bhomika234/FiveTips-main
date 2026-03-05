@@ -1,20 +1,19 @@
-import React, { useContext } from "react";
+import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { View } from "react-native";
 
 import { colors, typography } from "../theme";
-import { UserContext } from "../context/UserContext";
-import { Text } from "../Components";
 
-// Screens
-import { LoginScreen, Home, Profile, LogoScreen, SplashScreen } from "../Screens";
+import {
+  LoginScreen,
+  HomeScreen,
+  Profile,
+  LogoScreen,
+  SplashScreen,
+} from "../Screens";
 
-// Types for Stack and Tabs
 type StackParamList = {
-  Logo: undefined;    // Nayi Screen
-  Splash: undefined;  // Nayi Screen
   Login: undefined;
   Main: undefined;
 };
@@ -24,49 +23,56 @@ type TabParamList = {
   Profile: undefined;
 };
 
-// Stack & Tab
 const Stack = createNativeStackNavigator<StackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();
 
-// Bottom Tabs
+/* -------------------- TABS -------------------- */
+
 const Tabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarStyle: { backgroundColor: colors.white },
         headerShown: false,
+        tabBarStyle: { backgroundColor: colors.white },
         tabBarActiveTintColor: colors.primary,
-        tabBarLabelStyle: { fontFamily: typography.fonts.poppins.bold, fontSize: 13 },
+        tabBarLabelStyle: {
+          fontFamily: typography.fonts.poppins.bold,
+          fontSize: 13,
+        },
       }}
     >
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={HomeScreen}
         options={{
-          tabBarIcon: ({ color }) => <Ionicons name="home" size={24} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="home" size={24} color={color} />
+          ),
         }}
       />
+
       <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
-          tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="person" size={24} color={color} />
+          ),
         }}
       />
     </Tab.Navigator>
   );
 };
 
-// Main Stack Navigation
-export const Navigation = () => {
-  const { user } = useContext(UserContext); // get user login state
+/* -------------------- MAIN NAVIGATION -------------------- */
 
+export const Navigation = () => {
   return (
     <Stack.Navigator
+      initialRouteName="Login"   // 👈 Auth screen first
       screenOptions={{ headerShown: false }}
-      initialRouteName={user ? "Main" : "Login"}
     >
-      {!user && <Stack.Screen name="Login" component={LoginScreen} />}
+      <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Main" component={Tabs} />
     </Stack.Navigator>
   );

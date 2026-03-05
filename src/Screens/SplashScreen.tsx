@@ -4,7 +4,7 @@ import { Text, Screen } from "../Components"
 
 const { width, height } = Dimensions.get("window")
 
-// Images ka data jo aapne assets mein rakha hai
+
 const SPLASH_DATA = [
   { id: "1", image: require("../assets/Splash screen 2.png"), title: "Welcome to My Homes", desc: "Explore a world of tailored properties." },
   { id: "2", image: require("../assets/Splash screen 3.png"), title: "Discover Properties", desc: "Your perfect match awaits." },

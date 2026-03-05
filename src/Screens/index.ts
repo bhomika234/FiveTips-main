@@ -6,7 +6,7 @@ import { ForgotPassword } from "./auth/forgotpassword";
 import { CreateAccount } from "./auth/createaccount";
 import { LoginScreen } from "./auth/login";
 import { Payment } from "./auth/payment";
-import { Home } from "./home";
+import { Home } from "./home"; // Aapne yahan 'Home' import kiya hai
 import { History } from "./history";
 import { Profile } from "./profile";
 import Details from "./details";
@@ -14,14 +14,11 @@ import { ContactSupport } from "./contactsupport";
 import { PrivacyPolicy } from "./privacypolicy";
 import { TermsConditions } from "./termsconditions";
 import { Subscription } from "./subscription";
-
-// 1. LogoScreen ka import check karein
-// Agar file ka naam 'LogoScreen.tsx' hai toh ye sahi hai
 import { LogoScreen } from "./LogoScreen"; 
 
 export {
   Splash,
-  Splash as SplashScreen, // StackNavigator ke liye alias
+  Splash as SplashScreen,
   LogoScreen,
   GettingStart,
   Terms,
@@ -30,10 +27,10 @@ export {
   CreateAccount,
   LoginScreen,
   Payment,
-  Home,
+  Home as HomeScreen, // 'Home' ko 'HomeScreen' ke naam se export karein
   History,
   Profile,
-  Details,
+  Details, 
   ContactSupport,
   PrivacyPolicy,
   TermsConditions,
