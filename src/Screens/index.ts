@@ -6,7 +6,7 @@ import { ForgotPassword } from "./auth/forgotpassword";
 import { CreateAccount } from "./auth/createaccount";
 import { LoginScreen } from "./auth/login";
 import { Payment } from "./auth/payment";
-import { Home } from "./home";
+import { Home } from "./home"; // Aapne yahan 'Home' import kiya hai
 import { History } from "./history";
 import { Profile } from "./profile";
 import Details from "./details";
@@ -14,8 +14,13 @@ import { ContactSupport } from "./contactsupport";
 import { PrivacyPolicy } from "./privacypolicy";
 import { TermsConditions } from "./termsconditions";
 import { Subscription } from "./subscription";
+import { LogoScreen } from "./LogoScreen";
+import { ProfileScreen } from "./auth/profileScreen";
+
 export {
   Splash,
+  Splash as SplashScreen,
+  LogoScreen,
   GettingStart,
   Terms,
   Trial,
@@ -23,7 +28,7 @@ export {
   CreateAccount,
   LoginScreen,
   Payment,
-  Home,
+  Home as HomeScreen, // 'Home' ko 'HomeScreen' ke naam se export karein
   History,
   Profile,
   Details,
@@ -31,4 +36,5 @@ export {
   PrivacyPolicy,
   TermsConditions,
   Subscription,
+  ProfileScreen,
 };

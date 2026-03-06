@@ -44,9 +44,9 @@ export const colors = {
   palette,
 
   diabled: "#D4D4D4",
-  gradient: ["#01B98F", "#019B77"],
+  gradient: ["#FF0000", "#000000"],
   primary: "#01B98F",
-  secnodary: "#6DC8C2",
+  secnodary: "#",
   black: "#212121",
   fill: "#FAFAFA",
   white: "#FFFFFF",

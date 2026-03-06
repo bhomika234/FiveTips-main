@@ -61,12 +61,6 @@ export function LoginScreen(props: LoginScreenProps) {
       >
         <ImageBackground source={Images.bg} style={styles.imageBackground}>
           <ScrollView>
-            <View style={styles._logoview}>
-              <Image
-                source={Images.logo2}
-                style={{ height: 150, width: 200 }}
-              />
-            </View>
             <Text
               text="Login to Your Account"
               style={styles._heading}
