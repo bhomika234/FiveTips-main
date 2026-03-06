@@ -15,7 +15,8 @@ import { PrivacyPolicy } from "./privacypolicy";
 import { TermsConditions } from "./termsconditions";
 import { Subscription } from "./subscription";
 import { LogoScreen } from "./LogoScreen";
-import { ProfileScreen } from "./auth/profileScreen";
+import  ProfileScreen  from "./auth/profileScreen";
+import  Intro  from "./auth/inro";
 
 export {
   Splash,
@@ -37,4 +38,5 @@ export {
   TermsConditions,
   Subscription,
   ProfileScreen,
+  Intro
 };

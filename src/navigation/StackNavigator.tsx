@@ -6,7 +6,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { colors, typography } from "../theme";
 // import LoginScreen from './../Screens/'
 import { LogoScreen } from "./../Screens/LogoScreen";
-import { HomeScreen, Profile, SplashScreen,ProfileScreen,LoginScreen } from "../Screens";
+import {
+  HomeScreen,
+  Profile,
+  ProfileScreen,
+  Intro,
+  LoginScreen} from "../Screens";
 
 type StackParamList = {
   Login: undefined;
@@ -64,10 +69,14 @@ const Tabs = () => {
 export const Navigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Login" // 👈 Auth screen first
+      initialRouteName="Intro" // 👈 Auth screen first
       screenOptions={{ headerShown: false }}
     >
+      <Stack.Screen name="Intro" component={Intro} />
       <Stack.Screen name="Login" component={LoginScreen} />
+
+      <Stack.Screen name="LogoScreen" component={LogoScreen} />
+
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="Main" component={Tabs} />
     </Stack.Navigator>
