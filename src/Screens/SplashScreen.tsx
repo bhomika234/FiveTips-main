@@ -6,7 +6,7 @@ const { width, height } = Dimensions.get("window")
 
 
 const SPLASH_DATA = [
-  { id: "1", image: require("../assets/Splash screen 2.png"), title: "Welcome to My Homes", desc: "Explore a world of tailored properties." },
+  { id: "1", image: require("../assets/Splash screen 2.png "), title: "Welcome to My Homes", desc: "Explore a world of tailored properties." },
   { id: "2", image: require("../assets/Splash screen 3.png"), title: "Discover Properties", desc: "Your perfect match awaits." },
   { id: "3", image: require("../assets/Splash screen 4.png"), title: "Start your Search", desc: "Start your journey with us." },
 ]
