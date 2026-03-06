@@ -10,6 +10,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Text } from "../Components";
 import { UserContext } from "../context/UserContext";
 
+
 import {
   Splash,
   GettingStart,
@@ -29,6 +30,7 @@ import {
   Subscription,
 } from "../Screens";
 import { HistoryIcon, HomeIcon, ProfileIcon } from "../assets/svg";
+import Intro from "../Screens/auth/inro";
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
 const Tab = createBottomTabNavigator<AppStackParamList>();
@@ -96,6 +98,15 @@ const userRoutes: IRoutes[] = [
     component: Tabs,
     showHeader: false,
   },
+
+   {
+    name: "Intro",
+    component: Intro,
+    showHeader: true,
+    title: "Intro",
+  },
+
+  
   {
     name: "Details",
     component: Details,
